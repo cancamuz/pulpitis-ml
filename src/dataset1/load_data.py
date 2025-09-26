@@ -41,5 +41,7 @@ def load_expr_and_labels(
         lambda x: "mild (≤30mm)" if "mild" in x.lower()
         else ("severe (>30mm)" if "severe" in x.lower() else "none (=0mm)")
     )
+    labels["tissue"] = labels["tissue"].str.strip('"')
+
 
     return X, labels, expr_raw
