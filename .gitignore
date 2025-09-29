@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+*.env
+
+# PyCharm
+.idea/
+
+# Data
+data/
+*.tar
+*.zip
+*.gz
