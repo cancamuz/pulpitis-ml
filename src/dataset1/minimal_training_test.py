@@ -1,3 +1,4 @@
+#training with 2 samples, 1 for each class
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
@@ -18,7 +19,7 @@ print("Labels:", y)
 healthy_idx = np.where(y == "normal pulp")[0][0]   # first healthy sample (row no) # [:2] for 2 samples
 pulp_idx = np.where(y == "inflammed pulp")[0][0]      # first pulpitis sample (row no)
 
-train_idx = np.concatenate([healthy_idx, pulp_idx]) # np.concatenate([healthy_idx, pulp_idx]) for
+train_idx = [healthy_idx, pulp_idx] # np.concatenate([healthy_idx, pulp_idx]) for more samples
 test_idx = [i for i in range(len(y)) if i not in train_idx]
 
 X_train, y_train = X.iloc[train_idx], y.iloc[train_idx] # iloc because of indexing
@@ -29,7 +30,7 @@ print(f"Testing on {len(test_idx)} samples: {test_idx}")
 
 # Training
 clf = RandomForestClassifier(
-    n_estimators=1,
+    n_estimators=9,
     random_state=42
 )
 
@@ -43,6 +44,7 @@ predictions = X_test.copy()
 predictions['True_Label'] = y_test.values
 predictions['Predicted'] = y_pred
 
+#prediction list
 print(predictions[['True_Label', 'Predicted']])
 
 #primitive conf matrix
@@ -61,6 +63,7 @@ plt.show()
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred, digits=3))
 
+#prediction probabilities
 probs = clf.predict_proba(X_test)
 for sample, true_label, prob in zip(X_test.index, y_test, probs):
     print(f"{sample}: True={true_label}, Probabilities={dict(zip(clf.classes_, prob))}, Predicted={clf.predict([X_test.loc[sample]])[0]}")
