@@ -13,7 +13,7 @@ data_path = r"C:\Users\ccz\Documents\pulpitis_ml\data\metadata.csv"
 df = pd.read_csv(data_path)
 
 # Define features (X) and target (y)
-X = df.drop(columns=["Sample ID", "Group"])
+X = df.drop(columns=["Sample ID", "Group", "Cold pulp test"])
 y = df["Group"]
 
 # --- 2. Split ---
@@ -29,7 +29,14 @@ preprocessor = ColumnTransformer([
     ("num", StandardScaler(), num_cols)
 ])
 
+# Fit the preprocessor on the training data only
+preprocessor.fit(X_train)
 
+# Get encoded feature names
+encoded_features = preprocessor.get_feature_names_out()
+
+print("Features used for training:")
+print(encoded_features)
 # --- 5. Define models and hyperparameter grids ---
 
 # Logistic Regression
